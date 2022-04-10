@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<div align="center"  style="margin-top: 20px;"><a href="#"><button class="fastgame">Play Fast</button></a></div>
+
+<hr class="hr-shelf">
+
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <a href="#"><img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Метка первого слайда</h5>
+        <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+      </div>
+		</div>
+    <div class="carousel-item">
+      <a href="#"><img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Метка второго слайда</h5>
+        <p>Некоторый репрезентативный заполнитель для второго слайда.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <a href="#"><img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="..."></a>
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Метка третьего слайда</h5>
+        <p>Некоторый репрезентативный заполнитель для третьего слайда.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Предыдущий</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Следующий</span>
+  </button>
+</div>
+
+<hr class="hr-shelf">
+<br>
+<h1>Популярные викторины:</h1>
+<br>
+<table>
+    <tr>
+        <td>
+            <img src="../static/img/carusel.jpg" width=200px; height=150px;>
+        </td>
+        <td>
+            <a href="#"><h2>Название викторины</h2></a>
+            <div display="block-inline">
+                
+				<h4>тема викторины</h4>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+
+<br><br><br><br><br><br><br>
+
+
+{% endblock %}

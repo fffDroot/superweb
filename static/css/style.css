@@ -1,0 +1,27 @@
+.nav-button {
+	background-color: #fbff00;
+	color: #FF0004;
+	width: 150px;
+	height: 40px;
+	border: 0px;
+}
+.fastgame {
+	background-color: #2DED31;
+	width: 250px;
+	height: 80px;
+}
+.hr-shelf {
+	margin-top: 30px;
+	padding: 0;
+	height: 50px;
+	border: none;
+	border-bottom: 1px solid #1f1209;
+	box-shadow: 0 20px 20px -20px #333;
+	width: 95%;
+}
+.imgkarusel{
+	width: 350px;
+	height: 300px;
+	padding-left: 30%;
+	padding-right: 30%;
+}
