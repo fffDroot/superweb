@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect, request
 from data import db_session
 import json
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, ChangeForm
 from forms.news import NewsForm
 from data.users import User
 from data.news import News
 from werkzeug.utils import secure_filename
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_uploads import configure_uploads, IMAGES, UploadSet, patch_request_class
 from random import randint
 import os
@@ -15,7 +15,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'uploads')
+app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static', 'img')
 db_session.global_init("db/database.db")
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -32,9 +32,15 @@ def load_user(user_id):
 def index():
     return render_template('index.html')
 
+
+
 @app.route('/news')
 def news():
-    return render_template('news.html')
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).all()
+    news = news[::-1]
+    print(news)
+    return render_template('news.html', news=news)
 
 @app.route('/quizzes')
 def quizzes():
@@ -116,12 +122,42 @@ def addnews():
             title=form.head.data,
             content=form.text.data,
             tema=form.tema.data,
-            img_news=filename,
+            img_news='static/img/'+filename,
         )
         db_sess.add(news)
         db_sess.commit()
         return redirect('/news')
     return render_template('makenews.html', title='Регистрация', form=form)
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    user = load_user(current_user.id)
+    im = 'static/img/' + user.img_user
+    print(im)
+    return render_template('profile.html', user=user, im=im)
+
+@app.route('/profchange', methods=['GET', 'POST'])
+def profchange():
+    form = ChangeForm()
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(current_user.id)
+    if form.validate_on_submit():
+        if form.name.data != '':
+            user.name = form.name.data
+        if form.email.data != '':
+            user.email = form.email.data
+
+        if form.about.data != '':
+            user.about = form.about.data
+        if form.photo.data:
+            filename = photos.save(form.photo.data)
+            file_url = photos.url(filename)
+            user.img_user = filename
+        db_sess.commit()
+        return redirect('/profile')
+    return render_template('changeprof.html', title='Регистрация', form=form)
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1', debug=True)
