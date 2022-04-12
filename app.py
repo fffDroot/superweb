@@ -101,6 +101,38 @@ def logout():
     return redirect("/")
 
 
+# @app.route('/addquest', methods=['GET', 'POST'])
+# def addquest():
+#     form = NewsForm()
+#     if form.validate_on_submit():
+#         if form.head.data == '':
+#             return render_template('makequest.html',
+#                                    form=form,
+#                                    message="Пустой заголовок")
+#         if form.tema.data == '':
+#             return render_template('makequest.html',
+#                                    form=form,
+#                                    message="Нет темы")
+#         if form.photo.data == '':
+#             return render_template('makequest.html',
+#                                    form=form,
+#                                    message="Нет ФОТО")
+#         db_sess = db_session.create_session()
+#         filename = photos.save(form.photo.data)
+#         file_url = photos.url(filename)
+#         quest = News(
+#             title=form.head.data,
+#             content=form.text.data,
+#             tema=form.tema.data,
+#             img_news='static/img/' + filename,
+#         )
+#         db_sess.add(quest)
+#         db_sess.commit()
+#         return redirect('/news')
+#     que = ['sadds', 'sdsdsa', 'sdsdsd']
+#     return render_template('makequest.html', title='Регистрация', quetions=que, form=form)
+
+
 @app.route('/addnews', methods=['GET', 'POST'])
 def addnews():
     form = NewsForm()
@@ -141,10 +173,20 @@ def addnews():
 @login_required
 def profile():
     user = load_user(current_user.id)
-    im = 'static/img/' + user.img_user
-    print(im)
+    if user.img_user is None:
+        im = 'static/img/Noneph.jpg'
+    else:
+        im = 'static/img/' + user.img_user
     return render_template('profile.html', user=user, im=im)
 
+
+# @app.route('/Quest/<id>')
+# def onequest(id):
+#    print(id)
+#    db_sess = db_session.create_session()
+#    #news = db_sess.query(Quest).get(id)
+#    im = quest.img_news
+#    return render_template('onenews.html', news=news, im=im)
 
 @app.route('/news/<id>')
 def onenews(id):
@@ -165,7 +207,6 @@ def profchange():
             user.name = form.name.data
         if form.email.data != '':
             user.email = form.email.data
-
         if form.about.data != '':
             user.about = form.about.data
         if form.photo.data:
