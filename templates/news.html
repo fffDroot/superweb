@@ -9,14 +9,14 @@
       <div class="wp-block property list">
         <div class="wp-block-body">
           <div class="wp-block-img">
-            <a href="#">
+            <a href="news/{{ item.id }}">
               <img src="{{ item.img_news }}" alt="">
             </a>
           </div>
           <div class="wp-block-content">
             <small>
 <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>{{ item.created_date }}</small>
-			  <a href="#" style="text-decoration: none">
+			  <a href="news/{{ item.id }}" style="text-decoration: none">
             <h4 class="content-title">{{ item.title }}</h4>
 			</a>
             <p class="description">{{ item.content }}</p>
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-  </div> 
+  </div>
 </div>
 
 {% endfor %}

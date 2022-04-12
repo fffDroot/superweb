@@ -11,7 +11,6 @@ from flask_uploads import configure_uploads, IMAGES, UploadSet, patch_request_cl
 from random import randint
 import os
 
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -23,15 +22,17 @@ login_manager.init_app(app)
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 patch_request_class(app)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 
 @app.route('/news')
@@ -42,13 +43,16 @@ def news():
     print(news)
     return render_template('news.html', news=news)
 
+
 @app.route('/quizzes')
 def quizzes():
     return render_template('quizzes.html')
 
+
 @app.route('/groups')
 def groups():
     return render_template('groups.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
@@ -74,6 +78,7 @@ def reqister():
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -88,11 +93,13 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect("/")
+
 
 @app.route('/addnews', methods=['GET', 'POST'])
 def addnews():
@@ -122,7 +129,7 @@ def addnews():
             title=form.head.data,
             content=form.text.data,
             tema=form.tema.data,
-            img_news='static/img/'+filename,
+            img_news='static/img/' + filename,
         )
         db_sess.add(news)
         db_sess.commit()
@@ -137,6 +144,16 @@ def profile():
     im = 'static/img/' + user.img_user
     print(im)
     return render_template('profile.html', user=user, im=im)
+
+
+@app.route('/news/<id>')
+def onenews(id):
+    print(id)
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).get(id)
+    im = news.img_news
+    return render_template('onenews.html', news=news, im=im)
+
 
 @app.route('/profchange', methods=['GET', 'POST'])
 def profchange():
@@ -158,6 +175,7 @@ def profchange():
         db_sess.commit()
         return redirect('/profile')
     return render_template('changeprof.html', title='Регистрация', form=form)
+
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1', debug=True)
