@@ -20,8 +20,8 @@ class LoginForm(FlaskForm):
 
 
 class ChangeForm(FlaskForm):
-    name = StringField('Поменять имя', validators=[DataRequired()])
-    email = EmailField('Поменять почту', validators=[DataRequired()])
+    name = StringField('Поменять имя', validators=[])
+    email = EmailField('Поменять почту', validators=[])
     about = TextAreaField("Поменять информацию о себе")
     photo = FileField('Фото профиля')
     submit = SubmitField('Поменять')
