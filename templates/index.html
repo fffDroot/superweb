@@ -13,27 +13,26 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="10000">
-      <img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="...">
+      <a href="news/{{ n1.id }}"><img src="../{{ n1.img_news }}" class="d-block w-100 imgkarusel" alt="..."></a>
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка первого слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для первого слайда.</p>
+        <a href="news/{{ n1.id }}"><h5>{{ n1.title }}</h5></a>
+        <p></p>
       </div>
 		<h3 align="center" style="margin-top: 140px"></h3>
     </div>
 	  
     <div class="carousel-item" data-bs-interval="2000">
-      <img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="...">
+      <a href="news/{{ n2.id }}"><img src="../{{ n2.img_news }}" class="d-block w-100 imgkarusel" alt="..."></a>
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка второго слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для второго слайда.</p>
+        <a href="news/{{ n2.id }}"><h5>{{ n2.title }}</h5></a>
+        <p></p>
       </div>
 		<h3 align="center" style="margin-top: 140px"></h3>
     </div>
     <div class="carousel-item">
-      <img src="../static/img/carusel.jpg" class="d-block w-100 imgkarusel" alt="...">
+      <a href="news/{{ n3.id }}"><img src="../{{ n3.img_news }}" class="d-block w-100 imgkarusel" alt="..."></a>
       <div class="carousel-caption d-none d-md-block">
-        <h5>Метка третьего слайда</h5>
-        <p>Некоторый репрезентативный заполнитель для третьего слайда.</p>
+          <a href="news/{{ n3.id }}"><h5>{{ n3.title }}</h5></a>
       </div>
 		<h3 align="center" style="margin-top: 140px"></h3>
     </div>
