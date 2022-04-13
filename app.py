@@ -41,6 +41,9 @@ def index():
     news4 = news[0]
     news5 = news[1]
     news6 = news[2]
+    news7 = news[0]
+    news8 = news[1]
+    news9 = news[2]
     return render_template('index.html', n1=news1, n2=news2, n3=news3)
 
 
