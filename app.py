@@ -32,7 +32,13 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    db_sess = db_session.create_session()
+    news = db_sess.query(News).all()
+    news = news[::-1]
+    news1 = news[0]
+    news2 = news[1]
+    news3 = news[2]
+    return render_template('index.html', n1=news1, n2=news2, n3=news3)
 
 
 @app.route('/news')
@@ -141,7 +147,7 @@ def addnews():
 @login_required
 def profile():
     user = load_user(current_user.id)
-    im = 'static/img/' + user.img_user
+    im = user.img_user
     print(im)
     return render_template('profile.html', user=user, im=im)
 
@@ -171,7 +177,7 @@ def profchange():
         if form.photo.data:
             filename = photos.save(form.photo.data)
             file_url = photos.url(filename)
-            user.img_user = filename
+            user.img_user = 'static/img/' + filename
         db_sess.commit()
         return redirect('/profile')
     return render_template('changeprof.html', title='Регистрация', form=form)
