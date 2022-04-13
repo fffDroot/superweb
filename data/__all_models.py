@@ -1,4 +1,4 @@
 from . import users
 from . import news
-# from . import quizes
-# from . import questions
+from . import quizzes
+from . import questions
