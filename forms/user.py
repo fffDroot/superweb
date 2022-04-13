@@ -3,7 +3,6 @@ from wtforms import PasswordField, StringField, TextAreaField, SubmitField, Emai
 from wtforms.validators import DataRequired
 
 
-
 class RegisterForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
@@ -12,11 +11,13 @@ class RegisterForm(FlaskForm):
     about = TextAreaField("Немного о себе")
     submit = SubmitField('Войти')
 
+
 class LoginForm(FlaskForm):
     email = EmailField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
+
 
 class ChangeForm(FlaskForm):
     name = StringField('Поменять имя', validators=[DataRequired()])
