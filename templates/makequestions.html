@@ -21,18 +21,45 @@
         {{ error }}
     </p>
     {% endfor %}
+    <h1>Варианты ответа</h1>
     </p>
     <p>
-        {{ form.tema.label }}<br>
-        {{ form.tema(class="form-control") }}<br>
-        {% for error in form.tema.errors %}
+        {{ form.text1.label }}<br>
+        {{ form.text1(class="form-control") }}<br>
+        {% for error in form.text1.errors %}
     <p class="alert alert-danger" role="alert">
         {{ error }}
     </p>
     {% endfor %}
     </p>
-    <div class="form-group">
-        <label for="form-check">Укажите праильный ответ</label>
+    <p>
+        {{ form.text2.label }}<br>
+        {{ form.text2(class="form-control") }}<br>
+        {% for error in form.text2.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.text3.label }}<br>
+        {{ form.text3(class="form-control") }}<br>
+        {% for error in form.text3.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.text4.label }}<br>
+        {{ form.text4(class="form-control") }}<br>
+        {% for error in form.text4.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+        <label for="form-check">{{form.right.label}}</label>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="right" value="1" checked>
             <label class="form-check-label" for="1">
@@ -58,8 +85,6 @@
             </label>
         </div>
     </div>
-
-
     <p>
         {{ form.photo.label }}
         {{ form.hidden_tag() }}
@@ -68,9 +93,19 @@
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
+    <p>{{ form.sumbit(type="sumbit", class="btn btn-primary") }}</p>
+    {{message}}
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
+
 </form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 {% endblock %}

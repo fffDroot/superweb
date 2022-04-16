@@ -7,6 +7,8 @@ from forms.question import QuestionForm
 from forms.quiz import QuizForm
 from data.users import User
 from data.news import News
+from data.questions import Question
+from data.quizzes import Quiz
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_uploads import configure_uploads, IMAGES, UploadSet, patch_request_class
@@ -54,7 +56,6 @@ def news():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
     news = news[::-1]
-    print(news)
     return render_template('news.html', news=news)
 
 
@@ -123,10 +124,6 @@ def addquestion():
             return render_template('makequestions.html',
                                    form=form,
                                    message="Пустой заголовок")
-        if form.tema.data == '':
-            return render_template('makequestions.html',
-                                   form=form,
-                                   message="Нет темы")
         if form.photo.data == '':
             return render_template('makequestions.html',
                                    form=form,
@@ -134,15 +131,16 @@ def addquestion():
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
         file_url = photos.url(filename)
-        quest = QuestionForm(
-            title=form.head.data,
-            content=form.text.data,
-            tema=form.tema.data,
-            img_news='static/img/' + filename,
+        quest = Question(
+            name=form.head.data,
+            topic=form.text.data,
+            img_quiz='static/img/' + filename,
+            right=request.form['right']
         )
         db_sess.add(quest)
         db_sess.commit()
-        return redirect('/quizzes')
+    if form.validate_on_submit():
+        return redirect('/')
     return render_template('makequestions.html', title='Регистрация', form=form)
 
 
@@ -165,17 +163,15 @@ def addquiz():
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
         file_url = photos.url(filename)
-        quest = News(
-            title=form.head.data,
-            content=form.text.data,
-            tema=form.tema.data,
-            img_news='static/img/' + filename,
+        quiz = Quiz(
+            name=form.head.data,
+            topic=form.tema.data,
+            img_quiz='static/img/' + filename,
         )
-        db_sess.add(quest)
+        db_sess.add(quiz)
         db_sess.commit()
-        return redirect('/quizzes')
-    que = ['sadds', 'sdsdsa', 'sdsdsd']
-    return render_template('makequizzes.html', title='Регистрация', quetions=que, form=form)
+        return redirect('/addquestion')
+    return render_template('makequizzes.html', title='Регистрация',  form=form)
 
 
 @app.route('/addnews', methods=['GET', 'POST'])

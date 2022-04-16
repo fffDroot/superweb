@@ -10,7 +10,7 @@ class Question(SqlAlchemyBase):
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     topic = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    img_quiz = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
+    img_question = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
     right = sqlalchemy.Column(sqlalchemy.Integer, unique=True, nullable=True)
     one = sqlalchemy.Column(sqlalchemy.String)
     two = sqlalchemy.Column(sqlalchemy.String)
