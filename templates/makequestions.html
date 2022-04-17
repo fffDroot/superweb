@@ -21,12 +21,12 @@
         {{ error }}
     </p>
     {% endfor %}
-    <h1>Варианты ответа</h1>
     </p>
+    <h1>Варианты ответа</h1>
     <p>
         {{ form.text1.label }}<br>
         {{ form.text1(class="form-control") }}<br>
-        {% for error in form.text1.errors %}
+        {% for error in form.head.errors %}
     <p class="alert alert-danger" role="alert">
         {{ error }}
     </p>
@@ -84,7 +84,6 @@
                 4
             </label>
         </div>
-    </div>
     <p>
         {{ form.photo.label }}
         {{ form.hidden_tag() }}
@@ -93,12 +92,11 @@
         <span style="color: red;">{{ error }}</span>
         {% endfor %}
     </p>
-    <p>{{ form.sumbit(type="sumbit", class="btn btn-primary") }}</p>
-    {{message}}
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
-
 </form>
+    <a href="/">
+        <button class="nav-button">Создать</button></a>
 <br>
 <br>
 <br>

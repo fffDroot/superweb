@@ -116,14 +116,20 @@ def logout():
     return redirect("/")
 
 
-@app.route('/addquestion', methods=['GET', 'POST'])
-def addquestion():
+@app.route('/addquestion/<int:id>', methods=['GET', 'POST'])
+@login_required
+def addquestion(id):
     form = QuestionForm()
     if form.validate_on_submit():
         if form.head.data == '':
             return render_template('makequestions.html',
                                    form=form,
                                    message="Пустой заголовок")
+        if form.text.data == '':
+            return render_template('makequizzes.html',
+                                   form=form,
+                                   message="Нет темы")
+
         if form.photo.data == '':
             return render_template('makequestions.html',
                                    form=form,
@@ -134,17 +140,25 @@ def addquestion():
         quest = Question(
             name=form.head.data,
             topic=form.text.data,
-            img_quiz='static/img/' + filename,
-            right=request.form['right']
+            img_question='static/img/' + filename,
+            right=int(request.form['right']),
+            one=form.text1.data,
+            two=form.text2.data,
+            three=form.text3.data,
+            four=form.text4.data,
+            quiz_id=id
+
         )
+        print(quest)
         db_sess.add(quest)
         db_sess.commit()
-    if form.validate_on_submit():
-        return redirect('/')
+        for i in form:
+            i.data = None
     return render_template('makequestions.html', title='Регистрация', form=form)
 
 
 @app.route('/addquiz', methods=['GET', 'POST'])
+@login_required
 def addquiz():
     form = QuizForm()
     if form.validate_on_submit():
@@ -169,12 +183,15 @@ def addquiz():
             img_quiz='static/img/' + filename,
         )
         db_sess.add(quiz)
+        quiz = db_sess.query(Quiz).all()
+        id = quiz[-1].id
         db_sess.commit()
-        return redirect('/addquestion')
+        return redirect(f'/addquestion/{id}')
     return render_template('makequizzes.html', title='Регистрация',  form=form)
 
 
 @app.route('/addnews', methods=['GET', 'POST'])
+@login_required
 def addnews():
     form = NewsForm()
     if form.validate_on_submit():
