@@ -50,7 +50,7 @@ def index():
         news1 = news[0]
         news2 = news[1]
         news3 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         return render_template('index.html', n1=news1, n2=news2, n3=news3)
@@ -58,26 +58,26 @@ def index():
     elif len(news) == 1:
         news1 = news[0]
         news2 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         news3 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         return render_template('index.html', n1=news1, n2=news2, n3=news3)
 
     else:
         news1 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         news2 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         news3 = {
-            'title': 'Новостейнет',
+            'title': 'Новостей нет',
             'id': 'no',
         }
         return render_template('index.html', n1=news1, n2=news2, n3=news3)
