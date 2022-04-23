@@ -6,6 +6,7 @@ from forms.news import NewsForm
 from forms.question import QuestionForm
 from forms.quiz import QuizForm
 from data.users import User
+from data.directions import Directs
 from data.news import News
 from data.questions import Question
 from data.quizzes import Quiz
@@ -39,16 +40,47 @@ def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
     news = news[::-1]
-    news1 = news[0]
-    news2 = news[1]
-    news3 = news[2]
-    news4 = news[0]
-    news5 = news[1]
-    news6 = news[2]
-    news7 = news[0]
-    news8 = news[1]
-    news9 = news[2]
-    return render_template('index.html', n1=news1, n2=news2, n3=news3)
+    if len(news) >= 3:
+        news1 = news[0]
+        news2 = news[1]
+        news3 = news[2]
+        return render_template('index.html', n1=news1, n2=news2, n3=news3)
+
+    elif len(news) == 2:
+        news1 = news[0]
+        news2 = news[1]
+        news3 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        return render_template('index.html', n1=news1, n2=news2, n3=news3)
+
+    elif len(news) == 1:
+        news1 = news[0]
+        news2 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        news3 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        return render_template('index.html', n1=news1, n2=news2, n3=news3)
+
+    else:
+        news1 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        news2 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        news3 = {
+            'title': 'Новостей нет',
+            'id': 'no',
+        }
+        return render_template('index.html', n1=news1, n2=news2, n3=news3)
 
 
 @app.route('/news')
@@ -56,12 +88,39 @@ def news():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
     news = news[::-1]
-    return render_template('news.html', news=news)
+    spo = []
+    db_sess1 = db_session.create_session()
+    user = db_sess1.query(User).all()
+    user = user[::-1]
+    db_sess2 = db_session.create_session()
+    direct = db_sess2.query(Directs).all()
+    direct = direct[::-1]
+    for i in news:
+        id = i.id
+        title = i.title
+        dt = i.created_date
+        im = i.img_news
+        tema = 'Не выбрана'
+        nick = 'Anonymous'
+        for j in user:
+            if i.user_id == j.id:
+                nick = j.name
+        for g in direct:
+            if i.tema_id == g.id:
+                tema = g.title
+        spo.append([id, title, dt, im, nick, tema])
+
+    return render_template('news.html', news=spo, )
 
 
 @app.route('/quizzes')
 def quizzes():
     return render_template('quizzes.html')
+
+
+@app.route('/news/no')
+def nonews():
+    return "Написано же, что новости нет!!!"
 
 
 @app.route('/groups')
@@ -187,7 +246,7 @@ def addquiz():
         id = quiz[-1].id
         db_sess.commit()
         return redirect(f'/addquestion/{id}')
-    return render_template('makequizzes.html', title='Регистрация',  form=form)
+    return render_template('makequizzes.html', title='Регистрация', form=form)
 
 
 @app.route('/addnews', methods=['GET', 'POST'])
@@ -203,10 +262,6 @@ def addnews():
             return render_template('makenews.html', title='Регистрация',
                                    form=form,
                                    message="Пустое поле текста")
-        if form.tema.data == '':
-            return render_template('makenews.html', title='Регистрация',
-                                   form=form,
-                                   message="Нет темы")
         if form.photo.data == '':
             return render_template('makenews.html', title='Регистрация',
                                    form=form,
@@ -217,8 +272,9 @@ def addnews():
         news = News(
             title=form.head.data,
             content=form.text.data,
-            tema=form.tema.data,
             img_news='static/img/' + filename,
+            tema_id=form.tema.data,
+            user_id=current_user.id,
         )
         db_sess.add(news)
         db_sess.commit()
@@ -250,8 +306,35 @@ def onenews(id):
     print(id)
     db_sess = db_session.create_session()
     news = db_sess.query(News).get(id)
+    spo = []
+    db_sess1 = db_session.create_session()
+    user = db_sess1.query(User).all()
+    user = user[::-1]
+    db_sess2 = db_session.create_session()
+    direct = db_sess2.query(Directs).all()
+    direct = direct[::-1]
+    id = news.id
+    content = news.content
+    title = news.title
+    dt = news.created_date
     im = news.img_news
-    return render_template('onenews.html', news=news, im=im)
+    tema = 'Не выбрана'
+    nick = 'Anonymous'
+    for j in user:
+        if news.user_id == j.id:
+            nick = j.name
+    for g in direct:
+        if news.tema_id == g.id:
+            tema = g.title
+    spo.append(id)
+    spo.append(title)
+    spo.append(dt)
+    spo.append(im)
+    spo.append(nick)
+    spo.append(tema)
+    spo.append(content)
+    print(spo)
+    return render_template('onenews.html', news=spo)
 
 
 @app.route('/profchange', methods=['GET', 'POST'])
