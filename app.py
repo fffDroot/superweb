@@ -109,13 +109,17 @@ def news():
             if i.tema_id == g.id:
                 tema = g.title
         spo.append([id, title, dt, im, nick, tema])
-
-    return render_template('news.html', news=spo, )
+    return render_template('news.html', news=spo)
 
 
 @app.route('/quizzes')
 def quizzes():
-    return render_template('quizzes.html')
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).all()
+    spo = []
+    for i in quiz:
+        spo.append([i.id, i.name, i.img_quiz, i.topic])
+    return render_template('quizzes.html', quiz=spo)
 
 
 @app.route('/news/no')
@@ -205,10 +209,7 @@ def addquestion(id):
             two=form.text2.data,
             three=form.text3.data,
             four=form.text4.data,
-            quiz_id=id
-
-        )
-        print(quest)
+            quiz_id=id)
         db_sess.add(quest)
         db_sess.commit()
         for i in form:
@@ -293,17 +294,41 @@ def profile():
     return render_template('profile.html', user=user, im=im)
 
 
-# @app.route('/Quiz/<id>')
-# def onequiz(id):
-#    print(id)
-#    db_sess = db_session.create_session()
-#    news = db_sess.query(Quest).get(id)
-#    im = quest.img_news
-#    return render_template('onenews.html', news=news, im=im)
+@app.route('/quizz/<int:id>')
+def onequiz(id):
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).get(id)
+    spo = [id, quiz.name, quiz.img_quiz, quiz.topic]
+    return render_template('onequiz.html', quiz=spo)
+
+
+@app.route('/quizzquestions/<int:quiz_id>', methods=['POST', 'GET'])
+def questions(quiz_id):
+    form = QuestionForm()
+    db_sess = db_session.create_session()
+    question = db_sess.query(Question).filter(Question.quiz_id == quiz_id)
+    spo = []
+    k = 0
+    for i in question:
+        k += 1
+        spo.append([i.name, i.topic, i.img_question, i.right, i.one, i.two, i.three, i.four, k])
+    answered = 0
+    if form.is_submitted():
+        print('ssdsds')
+        for i in spo:
+            print(request.args)
+            #if int(request.form['right' + str(i[-1])]) == i[3]:
+            #    answered += 1
+        result = round(answered / len(spo))
+    return render_template('question.html', questions=spo, form=form)
+
+
+@app.route('/quizzquestions/<int:quiz_id>/result<result>')
+def result(quiz_id, result):
+    pass
 
 @app.route('/news/<id>')
 def onenews(id):
-    print(id)
     db_sess = db_session.create_session()
     news = db_sess.query(News).get(id)
     spo = []
@@ -318,8 +343,6 @@ def onenews(id):
     title = news.title
     dt = news.created_date
     im = news.img_news
-    tema = 'Не выбрана'
-    nick = 'Anonymous'
     for j in user:
         if news.user_id == j.id:
             nick = j.name
@@ -333,7 +356,6 @@ def onenews(id):
     spo.append(nick)
     spo.append(tema)
     spo.append(content)
-    print(spo)
     return render_template('onenews.html', news=spo)
 
 
