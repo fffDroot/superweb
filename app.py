@@ -208,7 +208,6 @@ def addquestion(id):
             quiz_id=id
 
         )
-        print(quest)
         db_sess.add(quest)
         db_sess.commit()
         for i in form:
