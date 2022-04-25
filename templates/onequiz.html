@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card mb-3">
+  <div class="card-body">
+  <h1 class="card-title">{{ quiz[1] }}</h1>
+  <img src="../{{ quiz[2] }}" class="card-img-top" alt="..." height="500px" style="padding-left: 20%; padding-right: 20%">
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <a class="btn btn-primary" href="/quizzquestions/{{ quiz[0] }}">Начать</a>
+  <br>
+  <br>
+</div>
+{% endblock %}
