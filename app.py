@@ -5,6 +5,7 @@ from forms.user import RegisterForm, LoginForm, ChangeForm
 from forms.news import NewsForm
 from forms.question import QuestionForm
 from forms.quiz import QuizForm
+from forms.quizquestion import QuizquestionForm
 from data.users import User
 from data.directions import Directs
 from data.news import News
@@ -304,7 +305,7 @@ def onequiz(id):
 
 @app.route('/quizzquestions/<int:quiz_id>', methods=['POST', 'GET'])
 def questions(quiz_id):
-    form = QuestionForm()
+    form = QuizquestionForm()
     db_sess = db_session.create_session()
     question = db_sess.query(Question).filter(Question.quiz_id == quiz_id)
     spo = []
@@ -314,18 +315,18 @@ def questions(quiz_id):
         spo.append([i.name, i.topic, i.img_question, i.right, i.one, i.two, i.three, i.four, k])
     answered = 0
     if form.is_submitted():
-        print('ssdsds')
         for i in spo:
-            print(request.args)
-            #if int(request.form['right' + str(i[-1])]) == i[3]:
-            #    answered += 1
-        result = round(answered / len(spo))
+            if request.form['right' + str(i[-1])] == str(i[3]):
+                answered += 1
+        result = round(answered / len(spo) * 100)
+        return redirect(f'/quizzquestions/result{result}')
     return render_template('question.html', questions=spo, form=form)
 
 
-@app.route('/quizzquestions/<int:quiz_id>/result<result>')
-def result(quiz_id, result):
-    pass
+@app.route('/quizzquestions/result<result>')
+def result(result):
+    return render_template('result.html', result=result)
+
 
 @app.route('/news/<id>')
 def onenews(id):
