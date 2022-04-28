@@ -15,7 +15,7 @@ from data.questions import Question
 from data.quizzes import Quiz
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_uploads import configure_uploads, IMAGES, UploadSet, patch_request_class
+from flask_uploads import configure_uploads, IMAGES, UploadSet
 from random import randint
 import os
 
@@ -29,7 +29,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
-patch_request_class(app)
 
 
 @login_manager.user_loader
