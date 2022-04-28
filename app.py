@@ -267,7 +267,6 @@ def addquestion(id):
                                    message="Нет ФОТО")
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
-        file_url = photos.url(filename)
         quest = Question(
             name=form.head.data,
             topic=form.text.data,
@@ -304,7 +303,6 @@ def addquiz():
                                    message="Нет ФОТО")
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
-        file_url = photos.url(filename)
         quiz = Quiz(
             name=form.head.data,
             topic=form.tema.data,
@@ -344,7 +342,6 @@ def addnews():
                                    message="Нет ФОТО")
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
-        file_url = photos.url(filename)
         news = News(
             title=form.head.data,
             content=form.text.data,
@@ -373,7 +370,6 @@ def addgroups():
                                    message="Нет ФОТО")
         db_sess = db_session.create_session()
         filename = photos.save(form.photo.data)
-        file_url = photos.url(filename)
         groups = Groups(
             title=form.head.data,
             img_group='static/img/' + filename,
@@ -514,7 +510,6 @@ def profchange():
             user.about = form.about.data
         if form.photo.data:
             filename = photos.save(form.photo.data)
-            file_url = photos.url(filename)
             user.img_user = filename
         db_sess.commit()
         return redirect('/profile')
