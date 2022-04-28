@@ -38,7 +38,7 @@ def load_user(user_id):
     return db_sess.query(User).get(user_id)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
@@ -130,7 +130,7 @@ def index():
         }
         return render_template('index.html', n1=news1, n2=news2, n3=news3, v1=spo1, v2=spo2, v3=spo3)
 
-@app.route('/news')
+@app.route('/news', methods=['GET', 'POST'])
 def news():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
@@ -158,7 +158,7 @@ def news():
         spo.append([id, title, dt, im, nick, tema])
     return render_template('news.html', news=spo)
 
-@app.route('/groups')
+@app.route('/groups', methods=['GET', 'POST'])
 def groups():
     db_sess = db_session.create_session()
     groups = db_sess.query(Groups).all()
@@ -178,7 +178,7 @@ def groups():
 
     return render_template('groups.html', groups=spg)
 
-@app.route('/quizzes')
+@app.route('/quizzes', methods=['GET', 'POST'])
 def quizzes():
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).all()
@@ -387,7 +387,7 @@ def addgroups():
 
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     user = load_user(current_user.id)
@@ -398,7 +398,7 @@ def profile():
     return render_template('profile.html', user=user, im=im)
 
 
-@app.route('/quizz/<int:id>')
+@app.route('/quizz/<int:id>', methods=['GET', 'POST'])
 def onequiz(id):
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).get(id)
@@ -426,7 +426,7 @@ def questions(quiz_id):
     return render_template('question.html', questions=spo, form=form)
 
 
-@app.route('/quizzquestions/result<result>')
+@app.route('/quizzquestions/result<result>', methods=['GET', 'POST'])
 def result(result):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.id == current_user.id).all()
@@ -437,7 +437,7 @@ def result(result):
     return render_template('result.html', result=result)
 
 
-@app.route('/news/<id>')
+@app.route('/news/<id>', methods=['GET', 'POST'])
 def onenews(id):
     db_sess = db_session.create_session()
     news = db_sess.query(News).get(id)
@@ -468,7 +468,7 @@ def onenews(id):
     spo.append(content)
     return render_template('onenews.html', news=spo)
 
-@app.route('/groups/<int:id>')
+@app.route('/groups/<int:id>', methods=['GET', 'POST'])
 def onegroup(id):
     db_sess = db_session.create_session()
     group = db_sess.query(Groups).get(id)
