@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for item in quiz %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="wp-block property list">
+                <div class="wp-block-body">
+                    <div class="wp-block-img">
+                            <img src="../static/img/{{ item[2] }}" alt="">
+                    </div>
+                    <div class="wp-block-content">
+                        <small>
+                            <h4 class="content-title">Место: {{ item[3] }}</h4>
+                            <h4 class="content-title">Ник: {{ item[0] }}</h4>
+                        <span class="pull-left">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </span>
+                        <span class="pull-right">
+              <span class="capacity">
+                <i class="fa fa-user"></i>Рейтинг: {{ item[1] }}
+              </span>
+            </span>
+                    </div>
+                </div>
+                <div class="wp-block-footer">
+                    <ul class="aux-info">
+                        <li><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> {{ item[5] }}</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

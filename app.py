@@ -1,12 +1,14 @@
 from flask import Flask, render_template, redirect, request
-from data import db_session
+from data import db_session, rating_api
 import json
 from forms.user import RegisterForm, LoginForm, ChangeForm
 from forms.news import NewsForm
+from forms.groups import GroupsForm
 from forms.question import QuestionForm
 from forms.quiz import QuizForm
 from forms.quizquestion import QuizquestionForm
 from data.users import User
+from data.groups import Groups
 from data.directions import Directs
 from data.news import News
 from data.questions import Question
@@ -21,6 +23,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static', 'img')
+app.register_blueprint(rating_api.blueprint)
 db_session.global_init("db/database.db")
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -41,11 +44,58 @@ def index():
     db_sess = db_session.create_session()
     news = db_sess.query(News).all()
     news = news[::-1]
+    quiz = db_sess.query(Quiz).all()
+    spo = []
+    for i in quiz:
+        spo.append(i)
+    spo = spo[::-1]
+
+    if len(spo) >= 3:
+        spo1 = spo[0]
+        spo2 = spo[1]
+        spo3 = spo[2]
+
+
+    elif len(spo) == 2:
+        spo1 = spo[0]
+        spo2 = spo[1]
+        spo3 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+
+
+    elif len(spo) == 1:
+        spo1 = spo[0]
+        spo2 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+        spo3 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+
+
+    else:
+        spo1 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+        spo2 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+        spo3 = {
+            'name': 'Викторины нет',
+            'id': 'no',
+        }
+
     if len(news) >= 3:
         news1 = news[0]
         news2 = news[1]
         news3 = news[2]
-        return render_template('index.html', n1=news1, n2=news2, n3=news3)
+        return render_template('index.html', n1=news1, n2=news2, n3=news3, v1=spo1, v2=spo2, v3=spo3)
 
     elif len(news) == 2:
         news1 = news[0]
@@ -54,8 +104,7 @@ def index():
             'title': 'Новостей нет',
             'id': 'no',
         }
-        return render_template('index.html', n1=news1, n2=news2, n3=news3)
-
+        return render_template('index.html', n1=news1, n2=news2, n3=news3, v1=spo1, v2=spo2, v3=spo3)
     elif len(news) == 1:
         news1 = news[0]
         news2 = {
@@ -66,8 +115,7 @@ def index():
             'title': 'Новостей нет',
             'id': 'no',
         }
-        return render_template('index.html', n1=news1, n2=news2, n3=news3)
-
+        return render_template('index.html', n1=news1, n2=news2, n3=news3, v1=spo1, v2=spo2, v3=spo3)
     else:
         news1 = {
             'title': 'Новостей нет',
@@ -81,8 +129,7 @@ def index():
             'title': 'Новостей нет',
             'id': 'no',
         }
-        return render_template('index.html', n1=news1, n2=news2, n3=news3)
-
+        return render_template('index.html', n1=news1, n2=news2, n3=news3, v1=spo1, v2=spo2, v3=spo3)
 
 @app.route('/news')
 def news():
@@ -112,6 +159,25 @@ def news():
         spo.append([id, title, dt, im, nick, tema])
     return render_template('news.html', news=spo)
 
+@app.route('/groups')
+def groups():
+    db_sess = db_session.create_session()
+    groups = db_sess.query(Groups).all()
+    dirs = db_sess.query(Directs).all()
+    groups = groups[::-1]
+    spg = []
+    for i in groups:
+        id = i.id
+        title = i.title
+        im = i.img_group
+        tema = i.tema_id
+        tn = ''
+        for j in dirs:
+            if j.id == tema:
+                tn = j.title
+        spg.append([id, title, im, tn])
+
+    return render_template('groups.html', groups=spg)
 
 @app.route('/quizzes')
 def quizzes():
@@ -127,10 +193,12 @@ def quizzes():
 def nonews():
     return "Написано же, что новости нет!!!"
 
+@app.route('/quizz/no')
+def novic():
+    return "Написано же, что викторины нет!!!"
 
-@app.route('/groups')
-def groups():
-    return render_template('groups.html')
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -255,6 +323,13 @@ def addquiz():
 @login_required
 def addnews():
     form = NewsForm()
+    ds = db_session.create_session()
+    grops = ds.query(Groups).all()
+    spds = []
+    for i in grops:
+        spds.append(i.id)
+    if current_user.id not in spds:
+        return "Создайте сообщество перед тем как добавлять новости"
     if form.validate_on_submit():
         if form.head.data == '':
             return render_template('makenews.html', title='Регистрация',
@@ -277,11 +352,40 @@ def addnews():
             img_news='static/img/' + filename,
             tema_id=form.tema.data,
             user_id=current_user.id,
+            groups_id=form.soob.data
         )
         db_sess.add(news)
         db_sess.commit()
         return redirect('/news')
     return render_template('makenews.html', title='Регистрация', form=form)
+
+@app.route('/addgroups', methods=['GET', 'POST'])
+@login_required
+def addgroups():
+    form = GroupsForm()
+    if form.validate_on_submit():
+        if form.head.data == '':
+            return render_template('makegroups.html', title='Регистрация',
+                                   form=form,
+                                   message="Пустой заголовок")
+        if form.photo.data == '':
+            return render_template('makegroups.html', title='Регистрация',
+                                   form=form,
+                                   message="Нет ФОТО")
+        db_sess = db_session.create_session()
+        filename = photos.save(form.photo.data)
+        file_url = photos.url(filename)
+        groups = Groups(
+            title=form.head.data,
+            img_group='static/img/' + filename,
+            tema_id=form.tema.data,
+            user_id=current_user.id,
+        )
+        db_sess.add(groups)
+        db_sess.commit()
+        return redirect('/groups')
+    return render_template('makegroups.html', title='Регистрация', form=form)
+
 
 
 @app.route('/profile')
@@ -325,6 +429,12 @@ def questions(quiz_id):
 
 @app.route('/quizzquestions/result<result>')
 def result(result):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).all()
+    print(user)
+    res = int(result) // 10 + 1
+    user[0].rating += res
+    db_sess.commit()
     return render_template('result.html', result=result)
 
 
@@ -358,6 +468,37 @@ def onenews(id):
     spo.append(tema)
     spo.append(content)
     return render_template('onenews.html', news=spo)
+
+@app.route('/groups/<int:id>')
+def onegroup(id):
+    db_sess = db_session.create_session()
+    group = db_sess.query(Groups).get(id)
+    users = db_sess.query(User).all()
+    news = db_sess.query(News).all()
+    news = news[::-1]
+    dirs = db_sess.query(Directs).all()
+    usid = group.user_id
+    tmid = group.tema_id
+    nick = ''
+    tema = ''
+    for i in users:
+        if i.id == usid:
+            nick = i.name
+    for j in dirs:
+        if j.id == tmid:
+            tema = j.title
+
+    spn = []
+    for g in news:
+        print(g.groups_id)
+        print(id)
+        if g.groups_id == id:
+            spn.append([g.id, g.title, g.created_date, g.img_news])
+            print(222)
+        #spn.append([g.id, g.title, g.created_date, g.img_news])
+    print(spn)
+
+    return render_template('onegroup.html', group=group, nick=nick, tema=tema, news=spn)
 
 
 @app.route('/profchange', methods=['GET', 'POST'])

@@ -83,6 +83,10 @@ body{background:url(https://bootstraptema.ru/images/bg/bg-1.png)}
  <ul id="myTab" class="nav nav-pills">
  <li class="active"><a href="#detail" data-toggle="tab">О пользователе</a></li>
  <li class=""><a href="/profchange">Edit profile</a></li>
+  <li class=""><a href="/addnews">Добавить новость</a></li>
+  <li class=""><a href="/addquiz">Добавить викторину</a></li>
+  <li class=""><a href="/addgroups">Добавить сообщество</a></li>
+  <li class=""><a href="/api/rating">Рейтинг</a></li>
  </ul>
  <div id="myTabContent" class="tab-content">
 <hr>
@@ -93,6 +97,7 @@ body{background:url(https://bootstraptema.ru/images/bg/bg-1.png)}
  <tr><td class="active">Зарегистрирован:</td><td>{{ user.created_date }}</td></tr>
  <tr><td class="active">Почта</td><td>{{ user.email }}</td></tr>
  <tr><td class="active">Страна:</td><td>Россия</td></tr>
+ <tr><td class="active">Рейтинг:</td><td>{{ user.rating }}</td></tr>
   <tr><td class="active">О себе:</td><td>{{ user.about }}</td></tr>
 </tbody>
  </table>

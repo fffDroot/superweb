@@ -11,5 +11,5 @@ class QuestionForm(FlaskForm):
     text3 = StringField('3')
     text4 = StringField('4')
     right = StringField("Выберите правильный ответ")
-    photo = FileField('Фото Вопроса')
+    photo = FileField('Фото Вопроса', validators=[DataRequired()])
     submit = SubmitField('Добавить')

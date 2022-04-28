@@ -1,37 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-{% for item in groups %}
+
+<div class="card mb-3">
+  <img src="../{{ group.img_group }}" class="card-img-top" alt="..." height="500px" style="padding-left: 20%; padding-right: 20%">
+  <div class="card-body">
+    <h5 class="card-title">{{ group.title }}</h5>
+
+	  <br><small class="text-muted">Создал: {{ nick }}</small></p>
+      <br><small class="text-muted">Тема: {{ tema }}</small></p>
+  </div>
+</div>
+
+<br><br>
+
+{% for item in news %}
 	<div class="container">
   <div class="row">
     <div class="col-md-8">
       <div class="wp-block property list">
         <div class="wp-block-body">
           <div class="wp-block-img">
-            <a href="groups/{{item[0]}}">
-              <img src="../{{ item[2] }}" alt="">
+            <a href="../news/{{ item[0] }}">
+              <img src="../{{ item[3] }}" alt="">
             </a>
           </div>
           <div class="wp-block-content">
             <small>
-<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> </small>
-			  <a href="groups/{{item[0]}}" style="text-decoration: none">
+<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>{{ item[2] }}</small>
+			  <a href="../news/{{ item[0] }}" style="text-decoration: none">
             <h4 class="content-title">{{ item[1] }}</h4>
 			</a>
             <span class="pull-left">
-              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>   
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
             </span>
             <span class="pull-right">
               <span class="capacity">
-                <i class="fa fa-user"></i>
               </span>
             </span>
           </div>
         </div>
         <div class="wp-block-footer">
           <ul class="aux-info">
-            <li><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Тема {{ item[3] }}</li>
-			  <li><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></li>
 
           </ul>
         </div>

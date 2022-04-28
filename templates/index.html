@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div align="center"  style="margin-top: 20px;"><a href="#"><button class="fastgame">Play Fast</button></a></div>
 
-<hr class="hr-shelf">
 
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
@@ -54,13 +52,32 @@
 <table>
     <tr>
         <td>
-            <img src="../static/img/carusel.jpg" width=200px; height=150px;>
+            <img src="../{{ v1.img_quiz }}" width=200px; height=150px;>
         </td>
         <td>
-            <a href="#"><h2>Название викторины</h2></a>
+            <a href="quizz/{{ v1.id }}"><h2>{{ v1.name }}</h2></a>
             <div display="block-inline">
-                
-				<h4>тема викторины</h4>
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="../{{ v2.img_quiz }}" width=200px; height=150px;>
+        </td>
+        <td>
+            <a href="quizz/{{ v2.id }}"><h2>{{ v2.name }}</h2></a>
+            <div display="block-inline">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="../{{ v3.img_quiz }}" width=200px; height=150px;>
+        </td>
+        <td>
+            <a href="quizz/{{ v3.id }}"><h2>{{ v3.name }}</h2></a>
+            <div display="block-inline">
             </div>
         </td>
     </tr>

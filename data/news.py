@@ -18,5 +18,6 @@ class News(SqlAlchemyBase):
                                  sqlalchemy.ForeignKey("directs.id"))
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
                                  sqlalchemy.ForeignKey("users.id"))
+    groups_id = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     user = orm.relation('User')
     tema = orm.relation('Directs')
