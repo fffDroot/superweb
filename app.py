@@ -30,7 +30,6 @@ login_manager.init_app(app)
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 
-
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -320,13 +319,6 @@ def addquiz():
 @login_required
 def addnews():
     form = NewsForm()
-    ds = db_session.create_session()
-    grops = ds.query(Groups).all()
-    spds = []
-    for i in grops:
-        spds.append(i.id)
-    if current_user.id not in spds:
-        return "Создайте сообщество перед тем как добавлять новости"
     if form.validate_on_submit():
         if form.head.data == '':
             return render_template('makenews.html', title='Регистрация',
@@ -348,7 +340,7 @@ def addnews():
             img_news='static/img/' + filename,
             tema_id=form.tema.data,
             user_id=current_user.id,
-            groups_id=form.soob.data
+            groups_id=0
         )
         db_sess.add(news)
         db_sess.commit()
@@ -378,7 +370,7 @@ def addgroups():
         )
         db_sess.add(groups)
         db_sess.commit()
-        return redirect('/groups')
+        return redirect('/')
     return render_template('makegroups.html', title='Регистрация', form=form)
 
 

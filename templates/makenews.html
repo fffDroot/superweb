@@ -32,15 +32,6 @@
         {% endfor %}
     </p>
     <p>
-        {{ form.soob.label }}<br>
-        {{ form.soob(class="form-control") }}<br>
-        {% for error in form.soob.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
-    </p>
-    <p>
         {{ form.photo.label }}
         {{ form.hidden_tag() }}
      {{ form.photo }}

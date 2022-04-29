@@ -14,5 +14,5 @@ class GroupsForm(FlaskForm):
         sp.append((i.id, i.title))
     head = StringField('Заголовок', validators=[DataRequired()])
     tema = SelectField('Тема', choices=sp)
-    photo = FileField('Фото новости', validators=[DataRequired()])
+    photo = FileField('Фото группы', validators=[DataRequired()])
     submit = SubmitField('Добавить')
